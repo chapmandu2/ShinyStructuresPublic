@@ -4,7 +4,7 @@ source('helper.R')
 
 shinyServer(function(input, output) {
     
-    output$test_text <- renderText({input$data_file$datapath})
+    output$test_text <- renderText({input$col_select})
     
     import_data <- reactive({
 
@@ -18,13 +18,23 @@ shinyServer(function(input, output) {
 
     })
     
-    output$dt <- DT::renderDataTable({
-        dat <- import_data() %>% 
-           # dplyr::mutate(structure=makeChemDoodleMolfile(MOLFILE, row_number())) %>%
-            dplyr::select(-contains('MOLFILE'))
-
-        DT::datatable(dat)  #need to ensure that columns containing HTML/Javascript aren't escaped
+    process_data <- reactive({
         
+        dat <- import_data()
+        structure_col <- input$col_select
+        
+        if (!is.null(structure_col)) {
+            if(structure_col != 'none') {
+                dat <- dat %>% 
+                    dplyr::rename_(sel_col=structure_col) %>%
+                    dplyr::mutate(structure=makeChemDoodleMolfile(sel_col, row_number())) %>%
+                    dplyr::select(-sel_col)
+        }}
+        return(dat)
+    })
+    
+    output$dt <- DT::renderDataTable({
+        DT::datatable(process_data())  #need to ensure that columns containing HTML/Javascript aren't escaped
             })
     
     output$col_select <- renderUI({
