@@ -1,9 +1,6 @@
 #help functions for ShinyStructures app
 library(shiny)
-options( java.parameters = "-Xmx4g" )
 library(dplyr)
-library(RJDBC)
-library(shiny)
 library(DT)
 
 
