@@ -1,0 +1,1 @@
+This project is a toy example of a shiny app that downloads data from Dotmatics and depicts compound structures (from MOL files) using the ChemDoodle web framework.
