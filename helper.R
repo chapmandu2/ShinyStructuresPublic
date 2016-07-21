@@ -10,7 +10,7 @@ library(DT)
 #function to get compound data from test database for a given user
 getData <- function() {
     
-    data <- readRDS('data/example.RDS')
+    data <- readRDS('data/fdaapproved.RDS')
     
     return(data)
     

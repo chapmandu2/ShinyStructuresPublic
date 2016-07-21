@@ -29,7 +29,6 @@ shinyUI(fluidPage(
     ),
 
     mainPanel(
-        textOutput('test_text'),
       DT::dataTableOutput('dt')
       
     )

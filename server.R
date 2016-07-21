@@ -7,15 +7,12 @@ shinyServer(function(input, output) {
     output$test_text <- renderText({input$col_select})
     
     import_data <- reactive({
-
-            out <- try( readr::read_tsv(input$data_file$datapath), silent=TRUE ) 
-            
+            out <- try( readr::read_tsv(input$data_file$datapath), silent=TRUE )
             if('data.frame' %in% class(out)) {
                 return(out)
             } else {
                 return(getData())
             }
-
     })
     
     process_data <- reactive({
@@ -34,11 +31,12 @@ shinyServer(function(input, output) {
     })
     
     output$dt <- DT::renderDataTable({
-        DT::datatable(process_data())  #need to ensure that columns containing HTML/Javascript aren't escaped
+        dat <- process_data()
+        DT::datatable(dat, escape=which(colnames(dat)!='structure'))  #need to ensure that columns containing HTML/Javascript aren't escaped
             })
     
     output$col_select <- renderUI({
-        selectInput('col_select', 'select a column', choices=c('none', colnames(import_data())), selected='none')
+        selectInput('col_select', 'Select Molfile Column', choices=c('none', colnames(import_data())), selected='none')
         
     })
     
