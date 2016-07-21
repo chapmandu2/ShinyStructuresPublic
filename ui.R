@@ -13,6 +13,10 @@ shinyUI(fluidPage(
 
   sidebarLayout(
     sidebarPanel(
+        fileInput('data_file', 'Choose custom TSV file ',
+                  accept=c('.xlsx',
+                           'xls')),
+        uiOutput('col_select'),
         selectInput(inputId='user_name', 
                     label='Select User:', 
                     choices=c('fbloggs', 'jdoe', 'fspencer')),
@@ -25,7 +29,9 @@ shinyUI(fluidPage(
     ),
 
     mainPanel(
+        textOutput('test_text'),
       DT::dataTableOutput('dt')
+      
     )
   )
 ))
